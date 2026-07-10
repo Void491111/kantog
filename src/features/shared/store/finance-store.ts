@@ -2,7 +2,14 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type TxType = "income" | "expense";
-export type TxCategory = "salary" | "food" | "transport" | "shopping" | "bills" | "other";
+export type TxCategory = 
+    | "salary"
+    | "food"
+    | "transport"
+    | "shopping"
+    | "bills"
+    | "other"
+    | (string & {})
 
 export interface Transaction {
   id: string;
