@@ -1,36 +1,24 @@
 "use client";
 import { useState } from "react";
-import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useFinanceStore, type TxCategory, type TxType } from "@/features/shared/store/finance-store";
+import { useAddTransactionForm } from "./use-add-transaction-form";
 
 export function AddTransactionDialog() {
   const [open, setOpen] = useState(false);
-  const add = useFinanceStore((s) => s.add);
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [type, setType] = useState<TxType>("expense");
-  const [category, setCategory] = useState<TxCategory>("food");
+  const form = useAddTransactionForm(() => setOpen(false));
 
-  const handleSubmit = () => {
-    const num = Number(amount);
-    if (!title.trim() || !num || num <= 0) {
-      toast.error("Isi judul & nominal dulu boss.");
-      return;
-    }
-    add({ title: title.trim(), amount: num, type, category, date: new Date().toISOString() });
-    toast.success("Transaksi tersimpan");
-    setTitle(""); setAmount(""); setType("expense"); setCategory("food");
-    setOpen(false);
+  const handleOpenChange = (next: boolean) => {
+    if (!next) form.reset();
+    setOpen(next);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="titan"><Plus className="size-4" /> Tambah</Button>
       </DialogTrigger>
@@ -39,19 +27,24 @@ export function AddTransactionDialog() {
           <DialogTitle>Tambah Transaksi</DialogTitle>
           <DialogDescription>Catat pemasukan atau pengeluaran lo.</DialogDescription>
         </DialogHeader>
+
         <div className="grid gap-4">
           <div className="grid gap-1.5">
             <Label htmlFor="title">Judul</Label>
-            <Input id="title" placeholder="contoh: Makan siang" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input id="title" placeholder="contoh: Makan siang"
+              value={form.title} onChange={(e) => form.setTitle(e.target.value)} />
           </div>
+
           <div className="grid gap-1.5">
             <Label htmlFor="amount">Nominal (IDR)</Label>
-            <Input id="amount" type="number" placeholder="50000" value={amount} onChange={(e) => setAmount(e.target.value)} />
+            <Input id="amount" type="number" placeholder="50000"
+              value={form.amount} onChange={(e) => form.setAmount(e.target.value)} />
           </div>
+
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-1.5">
               <Label>Tipe</Label>
-              <Select value={type} onValueChange={(v) => setType(v as TxType)}>
+              <Select value={form.type} onValueChange={form.setType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="income">Pemasukan</SelectItem>
@@ -61,7 +54,7 @@ export function AddTransactionDialog() {
             </div>
             <div className="grid gap-1.5">
               <Label>Kategori</Label>
-              <Select value={category} onValueChange={(v) => setCategory(v as TxCategory)}>
+              <Select value={form.category} onValueChange={form.setCategory}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="salary">Gaji</SelectItem>
@@ -74,10 +67,22 @@ export function AddTransactionDialog() {
               </Select>
             </div>
           </div>
+
+          {/* Muncul cuma pas user pilih "Lainnya" */}
+          {form.category === "other" && (
+            <div className="grid gap-1.5">
+              <Label htmlFor="customCategory">Nama Kategori</Label>
+              <Input id="customCategory" placeholder="contoh: hobi, hadiah, donasi"
+                value={form.customCategory}
+                onChange={(e) => form.setCustomCategory(e.target.value)}
+                autoFocus />
+            </div>
+          )}
         </div>
+
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
-          <Button variant="titan" onClick={handleSubmit}>Simpan</Button>
+          <Button variant="outline" onClick={() => handleOpenChange(false)}>Batal</Button>
+          <Button variant="titan" onClick={form.submit}>Simpan</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
