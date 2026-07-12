@@ -12,7 +12,7 @@ export function RevenueChart() {
   tx.forEach((t) => {
     const d = new Date(t.date).getDate();
     const cur = map.get(d) ?? { day: d, income: 0, expense: 0 };
-    if (t.type === "income") cur.income += t.amount;
+    if (t.type === "INCOME") cur.income += t.amount;
     else cur.expense += t.amount;
     map.set(d, cur);
   });

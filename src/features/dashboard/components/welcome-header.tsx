@@ -10,7 +10,7 @@ export function WelcomeHeader() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col justify-between gap-4 rounded-2xl border border-titan-100 bg-gradient-to-br from-titan-50 to-white p-6 md:flex-row md:items-center"
+      className="flex flex-col justify-between gap-4 rounded-2xl border border-titan-100 bg-linear-to-br from-titan-50 to-white p-6 md:flex-row md:items-center"
     >
       <div>
         <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight md:text-2xl">

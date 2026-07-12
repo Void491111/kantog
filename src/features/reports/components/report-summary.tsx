@@ -8,7 +8,7 @@ import { formatCurrency } from "@/lib/utils";
 const COLORS = ["#3f3e3a", "#575651", "#6f6e69", "#878681", "#9d9c97", "#b8b7b3"];
 
 export function CategoryBreakdown() {
-  const tx = useFinanceStore((s) => s.transactions).filter((t) => t.type === "expense");
+  const tx = useFinanceStore((s) => s.transactions).filter((t) => t.type === "EXPENSE");
   const totals = new Map<string, number>();
   tx.forEach((t) => totals.set(t.category, (totals.get(t.category) ?? 0) + t.amount));
   const data = Array.from(totals.entries()).map(([name, value]) => ({ name, value }));
@@ -43,11 +43,11 @@ export function CategoryBreakdown() {
 
 export function ReportSummary() {
   const tx = useFinanceStore((s) => s.transactions);
-  const income = tx.filter((t) => t.type === "income").reduce((a, b) => a + b.amount, 0);
-  const expense = tx.filter((t) => t.type === "expense").reduce((a, b) => a + b.amount, 0);
+  const income = tx.filter((t) => t.type === "INCOME").reduce((a, b) => a + b.amount, 0);
+  const expense = tx.filter((t) => t.type === "EXPENSE").reduce((a, b) => a + b.amount, 0);
   const net = income - expense;
-  const avgExpense = tx.filter((t) => t.type === "expense").length
-    ? expense / tx.filter((t) => t.type === "expense").length
+  const avgExpense = tx.filter((t) => t.type === "EXPENSE").length
+    ? expense / tx.filter((t) => t.type === "EXPENSE").length
     : 0;
 
   const rows = [

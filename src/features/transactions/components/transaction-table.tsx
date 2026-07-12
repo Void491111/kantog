@@ -40,17 +40,17 @@ export function TransactionTable() {
             >
               <div className={cn(
                 "flex size-9 shrink-0 items-center justify-center rounded-lg",
-                t.type === "income" ? "bg-emerald-50 text-emerald-700" : "bg-titan-100 text-titan-700"
+                t.type === "INCOME" ? "bg-emerald-50 text-emerald-700" : "bg-titan-100 text-titan-700"
               )}>
-                {t.type === "income" ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
+                {t.type === "INCOME" ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{t.title}</p>
                 <p className="text-xs text-muted-foreground">{formatDate(t.date)} · {t.category}</p>
               </div>
               <div className="text-right">
-                <p className={cn("text-sm font-semibold tabular-nums", t.type === "income" ? "text-emerald-700" : "text-titan-800")}>
-                  {t.type === "income" ? "+" : "-"}{formatCurrency(t.amount)}
+                <p className={cn("text-sm font-semibold tabular-nums", t.type === "INCOME" ? "text-emerald-700" : "text-titan-800")}>
+                  {t.type === "INCOME" ? "+" : "-"}{formatCurrency(t.amount)}
                 </p>
                 <Button variant="ghost" size="icon" className="size-7" onClick={() => handleRemove(t.id, t.title)}>
                   <Trash2 className="size-3.5" />
@@ -88,17 +88,17 @@ export function TransactionTable() {
                     <div className="flex items-center gap-2">
                       <div className={cn(
                         "flex size-7 items-center justify-center rounded-md",
-                        t.type === "income" ? "bg-emerald-50 text-emerald-700" : "bg-titan-100 text-titan-700"
+                        t.type === "INCOME" ? "bg-emerald-50 text-emerald-700" : "bg-titan-100 text-titan-700"
                       )}>
-                        {t.type === "income" ? <ArrowUpRight className="size-3.5" /> : <ArrowDownRight className="size-3.5" />}
+                        {t.type === "INCOME" ? <ArrowUpRight className="size-3.5" /> : <ArrowDownRight className="size-3.5" />}
                       </div>
                       {t.title}
                     </div>
                   </TableCell>
                   <TableCell className="capitalize text-muted-foreground">{t.category}</TableCell>
                   <TableCell className="text-muted-foreground">{formatDate(t.date)}</TableCell>
-                  <TableCell className={cn("text-right font-semibold tabular-nums", t.type === "income" ? "text-emerald-700" : "text-titan-800")}>
-                    {t.type === "income" ? "+" : "-"}{formatCurrency(t.amount)}
+                  <TableCell className={cn("text-right font-semibold tabular-nums", t.type === "INCOME" ? "text-emerald-700" : "text-titan-800")}>
+                    {t.type === "INCOME" ? "+" : "-"}{formatCurrency(t.amount)}
                   </TableCell>
                   <TableCell>
                     <Button variant="ghost" size="icon" className="size-7" onClick={() => handleRemove(t.id, t.title)}>

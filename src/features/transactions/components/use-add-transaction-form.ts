@@ -11,14 +11,14 @@ export function useAddTransactionForm(onSuccess?: () => void) {
 
     const[title, setTitle] = useState("");
     const[amount, setAmount] = useState("");
-    const[type, setType] = useState<TxType>("expense");
+    const[type, setType] = useState<TxType>("EXPENSE");
     const[category, setCategory] = useState<PresetCategory>("food");
     const[customCategory, setCustomCategory] = useState("");
 
     const reset = () => {
         setTitle("");
         setAmount("");
-        setType("expense");
+        setType("EXPENSE");
         setCategory("food");
         setCustomCategory("");
     };

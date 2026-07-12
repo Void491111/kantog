@@ -9,8 +9,8 @@ import { formatCurrency } from "@/lib/utils";
 export function StatsCards() {
   const tx = useFinanceStore((s) => s.transactions);
 
-  const income = tx.filter((t) => t.type === "income").reduce((a, b) => a + b.amount, 0);
-  const expense = tx.filter((t) => t.type === "expense").reduce((a, b) => a + b.amount, 0);
+  const income = tx.filter((t) => t.type === "INCOME").reduce((a, b) => a + b.amount, 0);
+  const expense = tx.filter((t) => t.type === "EXPENSE").reduce((a, b) => a + b.amount, 0);
   const balance = income - expense;
   const savingsRate = income > 0 ? Math.max(0, ((income - expense) / income) * 100) : 0;
 

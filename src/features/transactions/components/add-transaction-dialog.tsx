@@ -47,8 +47,8 @@ export function AddTransactionDialog() {
               <Select value={form.type} onValueChange={form.setType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="income">Pemasukan</SelectItem>
-                  <SelectItem value="expense">Pengeluaran</SelectItem>
+                  <SelectItem value="INCOME">Pemasukan</SelectItem>
+                  <SelectItem value="EXPENSE">Pengeluaran</SelectItem>
                 </SelectContent>
               </Select>
             </div>

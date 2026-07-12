@@ -8,15 +8,12 @@ import { useFinanceStore } from "@/features/shared/store/finance-store";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const fetchAll = useFinanceStore((s) => s.fetchAll);
 
-  // manual rehydrate zustand persist, then seed dummy data
+  // Auto-fetch semua transaksi dari backend saat app pertama load.
   useEffect(() => {
-    useFinanceStore.persist.rehydrate()?.then(() => {
-      useFinanceStore.getState().seed();
-      setHydrated(true);
-    });
-  }, []);
+    fetchAll();
+  }, [fetchAll]);
 
   return (
     <div className="flex min-h-screen">
@@ -42,7 +39,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="flex-1 overflow-x-hidden bg-background p-4 md:p-8">
-          {hydrated ? children : null}
+          {children}
         </main>
       </div>
     </div>
