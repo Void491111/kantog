@@ -7,16 +7,29 @@ import { formatCurrency } from "@/lib/utils";
 export function RevenueChart() {
   const tx = useFinanceStore((s) => s.transactions);
 
-  // group by day-of-month for current month
-  const map = new Map<number, { day: number; income: number; expense: number }>();
+  // Ambil bulan & tahun sekarang biar chart cuma nampilin transaksi bulan berjalan
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Tentuin berapa hari di bulan ini (28-31)
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  // Init data 1-N (semua hari di bulan ini, income & expense 0)
+  const data = Array.from({ length: daysInMonth }, (_, i) => ({
+    day: i + 1,
+    income: 0,
+    expense: 0,
+  }));
+
+  // Aggregate transaksi ke bucket per hari
   tx.forEach((t) => {
-    const d = new Date(t.date).getDate();
-    const cur = map.get(d) ?? { day: d, income: 0, expense: 0 };
-    if (t.type === "INCOME") cur.income += t.amount;
-    else cur.expense += t.amount;
-    map.set(d, cur);
+    const d = new Date(t.date);
+    if (d.getMonth() !== currentMonth || d.getFullYear() !== currentYear) return;
+    const dayIndex = d.getDate() - 1; // day 1 → index 0
+    if (t.type === "INCOME") data[dayIndex].income += t.amount;
+    else data[dayIndex].expense += t.amount;
   });
-  const data = Array.from(map.values()).sort((a, b) => a.day - b.day);
 
   return (
     <Card>

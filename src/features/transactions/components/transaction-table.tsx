@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
-import { Trash2, ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { Trash2, ArrowDownRight, ArrowUpRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -10,12 +10,38 @@ import { formatCurrency, formatDate, cn } from "@/lib/utils";
 export function TransactionTable() {
   const tx = useFinanceStore((s) => s.transactions);
   const remove = useFinanceStore((s) => s.remove);
+  const isLoading = useFinanceStore((s) => s.isLoading);
+  const error = useFinanceStore((s) => s.error);
 
-  const handleRemove = (id: string, title: string) => {
-    remove(id);
-    toast.success(`"${title}" dihapus`);
+  const handleRemove = async (id: string, title: string) => {
+    try {
+      await remove(id);
+      toast.success(`"${title}" dihapus`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Gagal hapus transaksi");
+    }
   };
 
+  // Loading state: initial fetch
+  if (isLoading && tx.length === 0) {
+    return (
+      <div className="flex items-center justify-center rounded-xl border border-dashed border-titan-200 p-10 text-sm text-muted-foreground">
+        <Loader2 className="mr-2 size-4 animate-spin" />
+        Loading transaksi...
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && tx.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed border-red-200 bg-red-50 p-10 text-center text-sm text-red-700">
+        {error}
+      </div>
+    );
+  }
+
+  // Empty state
   if (tx.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-titan-200 p-10 text-center text-sm text-muted-foreground">
